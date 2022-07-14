@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+<body>
+	<a href="javascript:kakaoLogin();" >
+		<img src="/bank/resources/images/kakao_login_button.png">
+	</a>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script>
+	/* kakao sdk 초기화 */
+	window.Kakao.init('349cbf5c1fc4525e01f563ecf1b768df');
+	
+	/* SDK 초기화 여부를 판단 */
+	console.log(Kakao.isInitialized());
+	
+	/* 추가 항목 동의 받기, 사용자 정보 가져오기 */ 
+	function kakaoLogin(){
+		window.Kakao.Auth.login({
+			scope:'profile_nickname, profile_image, account_email',
+			success: function(authObj){
+				console.log(authObj);
+				window.Kakao.API.request({
+					url:'/v2/user/me',
+					data: {
+						property_keys: [  "kakao_account.profile_nickname"
+										, "kakao_account.profile_image"
+										, "kakao_account.account_email" ]
+					},
+					success: function(response) {
+						console.log(response);
+						document.write(response);
+						alert('login successful!');
+					},
+					fail: function(error){
+						console.log(error);
+					}
+				});
+			} 
+		})
+	}
+	
+</script>
+
+</body>
+</html>
